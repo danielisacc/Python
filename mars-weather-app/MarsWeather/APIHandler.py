@@ -15,23 +15,19 @@ class APIHandler():
     def __init__(self) -> None:
         self.__apiParams = {
             "url": "https://api.nasa.gov/insight_weather/",
-            "api_key": None,
+            "api_key": getenv("MARS_WEATHER_API_KEY"),
             "feedType": "json",
             "ver": "1.0"
         }
         self.__response = None
-
-    def setAPIKey():
-        api_key = getenv("MARS_WEATHER_API_KEY")
-        if api_key == None:
-            api_key = input("API Key not provided in MARS_WEATHER_API_KEY enviornemntal variable. Please enter an API key now for temporary acces, or check documentation for information on setting up enviornmental variable.\nPlease enter an temporary API Key: ")
-        return api_key
     
-    def connect(self, api_key:str = setAPIKey()) -> str:
-        response = rq.get(f"{self.__apiParams['url']}?api_key={api_key}&feedtype={self.__apiParams['feedType']}&ver={self.__apiParams['ver']}")
+    def connect(self) -> str:
+        if self.__apiParams['api_key'] == None:
+            self.__apiParams['api_key'] = input("API Key not provided in MARS_WEATHER_API_KEY enviornemntal variable. Please enter an API key now for temporary acces, or check documentation for information on setting up enviornmental variable.\nPlease enter an temporary API Key: ").strip()
+        getString = f"{self.__apiParams['url']}?api_key={self.__apiParams['api_key']}&feedtype={self.__apiParams['feedType']}&ver={self.__apiParams['ver']}"
+        response = rq.get(getString)
         if response.status_code == 403:
-            raise APIKeyError("Incorrect API Key: 401 Status Code, Forbidden User Access")
-        self.__apiParams['api_key'] = api_key
+            raise APIKeyError(f"Incorrect API Key: 401 Status Code, Forbidden User Access: input get request\n{getString}")
         self.__response = response
         return self.__response.status_code
 
