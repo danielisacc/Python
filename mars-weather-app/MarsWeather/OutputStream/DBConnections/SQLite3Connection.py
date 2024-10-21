@@ -72,6 +72,6 @@ class SQLiteConnection(DBConnection):
             self.__c.executescript(script)
             self.__conn.commit()
         except FileNotFoundError:
-            print("Error: File Not Found.")
+            print("Error: WeatherDataCreate.sql Not Found.")
         except Exception as e:
             print(f"An error occurred: {e}")

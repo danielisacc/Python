@@ -2,13 +2,14 @@
 and sending data to sources such as DataModeling Objects and OutputStreams."""
 import requests as rq
 from os import getenv
+
 class APIError(Exception):
     pass
 
-class APIKeyError(APIError):
+class FailedAPIConnection(APIError):
     pass
 
-class FailedAPIConnection(APIError):
+class APIKeyError(FailedAPIConnection):
     pass
 
 class APIHandler():

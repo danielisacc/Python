@@ -1,20 +1,18 @@
 from MarsWeather.OutputStream.DBConnections.SQLite3Connection import SQLiteConnection
-from MarsWeather import APIHandler as api
+from MarsWeather import APIHandler
+from MarsWeather import DataModeling
+# Connect to the API and load JSON response into data variable
+# api = APIHandler.APIHandler()
+# api.connect()
+# data = api.getJSON()
 
-api = api.APIHandler()
-
-api.connect()
-
-data = api.getJSON()
-
+# Create DB connection, createDB will create missing tables
 dbConnection = SQLiteConnection()
+model = DataModeling.DataModel(dbConnection)
+# dbConnection.createDB()
 
-print(dbConnection.connect())
+# Send JSON API data into the DB
+# dbConnection.insert(data)
 
-dbConnection.createDB()
-
-dbConnection.insert(data)
-
-print(dbConnection.execute('SELECT av FROM PRE'))
-
+# Disconnect from the DB commiting before closing connection.
 dbConnection.disconnect()
